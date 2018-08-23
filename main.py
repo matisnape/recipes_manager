@@ -9,6 +9,7 @@ from flask_bcrypt import Bcrypt
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
@@ -16,12 +17,13 @@ db.app = app
 db.init_app(app)
 lm = LoginManager()
 lm.init_app(app)
+lm.login_view = 'login'
 bcrypt = Bcrypt()
 
 app.static_path = path.join(path.abspath(__file__), 'static')
 
 
-
 if __name__ == '__main__':
     from views import *
+    from recipes.views import *
     app.run(debug=True)

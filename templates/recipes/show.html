@@ -1,0 +1,44 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="title col-md-3">
+            <h3>{{ recipe.title }}</h3>
+            {{ recipe.status }}
+        </div>
+    </div>
+    <div class="row score">
+        <div class="score col-md-3">
+            Average score: {{ recipe.average_score }}
+        </div>
+    </div>
+    <div class="row author">
+        <div class="author col-md-3">
+            By {{ recipe.user.email }}
+        </div>
+    </div>
+    <div class="row time_needed">
+        <div class="time col-md-3">
+            Time needed: ({{ recipe.time_needed }} minutes)
+        </div>
+    </div>
+    <div class="row content">
+        <div class="ingredients col-md-5">
+            <h4>Ingredients</h4>
+            {{ recipe.ingredients }}
+        </div>
+        <div class="steps col-md-5">
+            <h4>Steps</h4>
+            {{ recipe.steps }}
+        </div>
+    </div>
+    {% if current_user.is_authenticated and recipe.user != current_user %}
+    <form action="/vote/{{recipe.id}}" method="POST">
+        {{ form.csrf_token }}
+        {{ form.value(class="vote") }} 
+        <button class="btn btn-primary btn-sm" type="submit" value="Submit">Vote</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
